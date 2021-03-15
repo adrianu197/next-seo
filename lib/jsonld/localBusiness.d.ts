@@ -1,12 +1,27 @@
 import { FC } from 'react';
 import { Address } from '../types';
+declare type Action = {
+  actionName: string;
+  actionType: string;
+  target: string;
+};
 declare type AggregateRating = {
   ratingValue: string;
   ratingCount: string;
 };
+declare type AreaServed = GeoCircle[];
 declare type Geo = {
   latitude: string;
   longitude: string;
+};
+declare type GeoCircle = {
+  geoMidpoint: Geo;
+  geoRadius: string;
+};
+declare type MakesOffer = Offer[];
+declare type Offer = {
+  priceSpecification: PriceSpecification;
+  itemOffered: Service;
 };
 declare type OpeningHoursSpecification = {
   opens: string;
@@ -14,6 +29,11 @@ declare type OpeningHoursSpecification = {
   dayOfWeek: string | string[];
   validFrom?: string;
   validThrough?: string;
+};
+declare type PriceSpecification = {
+  type: string;
+  priceCurrency: string;
+  price: string;
 };
 declare type Rating = {
   ratingValue: string;
@@ -27,6 +47,10 @@ declare type Review = {
   reviewBody: string;
   reviewRating: Rating;
   name?: string;
+};
+declare type Service = {
+  name: string;
+  description: string;
 };
 export interface LocalBusinessJsonLdProps {
   keyOverride?: string;
@@ -45,6 +69,9 @@ export interface LocalBusinessJsonLdProps {
   servesCuisine?: string | string[];
   sameAs?: string[];
   openingHours?: OpeningHoursSpecification | OpeningHoursSpecification[];
+  action?: Action;
+  areaServed?: AreaServed;
+  makesOffer?: MakesOffer;
 }
 declare const LocalBusinessJsonLd: FC<LocalBusinessJsonLdProps>;
 export default LocalBusinessJsonLd;

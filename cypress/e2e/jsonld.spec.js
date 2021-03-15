@@ -1,7 +1,7 @@
 import { assertSchema } from '@cypress/schema-tools';
 import schemas from '../schemas';
 
-const expectedJSONResults = 21;
+const expectedJSONResults = 22;
 
 const articleLdJsonIndex = 0;
 const breadcrumbLdJsonIndex = 1;
@@ -22,8 +22,9 @@ const datasetLdJsonIndex = 15;
 const recipeLdJsonIndex = 16;
 const siteLinksSearchBoxLdJsonIndex = 17;
 const qaPageLdJsonIndex = 18;
-const collectionPageLdJsonIndex = 19;
-const profilePageLdJsonIndex = 20;
+const softwareAppJsonIndex = 19;
+const collectionPageLdJsonIndex = 20;
+const profilePageLdJsonIndex = 21;
 
 describe('Validates JSON-LD For:', () => {
   it('Article', () => {
@@ -214,7 +215,7 @@ describe('Validates JSON-LD For:', () => {
       .should('have.length', expectedJSONResults)
       .then(tags => {
         const jsonLD = JSON.parse(tags[localBusinessLdJsonIndex].innerHTML);
-        assertSchema(schemas)('Local Business', '1.2.0')(jsonLD);
+        assertSchema(schemas)('Local Business', '1.3.0')(jsonLD);
       });
   });
 
@@ -311,6 +312,60 @@ describe('Validates JSON-LD For:', () => {
               },
             },
           ],
+          areaServed: [
+            {
+              '@type': 'GeoCircle',
+              geoMidpoint: {
+                '@type': 'GeoCoordinates',
+                latitude: '41.108237',
+                longitude: '-80.642982',
+              },
+              geoRadius: '1000',
+            },
+            {
+              '@type': 'GeoCircle',
+              geoMidpoint: {
+                '@type': 'GeoCoordinates',
+                latitude: '51.108237',
+                longitude: '-80.642982',
+              },
+              geoRadius: '1000',
+            },
+          ],
+          makesOffer: [
+            {
+              '@type': 'Offer',
+              priceSpecification: {
+                '@type': 'UnitPriceSpecification',
+                priceCurrency: 'EUR',
+                price: '1000-10000',
+              },
+              itemOffered: {
+                '@type': 'Service',
+                name: 'Motion Design Services',
+                description:
+                  'We are the expert of animation and motion design productions.',
+              },
+            },
+            {
+              '@type': 'Offer',
+              priceSpecification: {
+                '@type': 'UnitPriceSpecification',
+                priceCurrency: 'EUR',
+                price: '2000-10000',
+              },
+              itemOffered: {
+                '@type': 'Service',
+                name: 'Branding Services',
+                description:
+                  'Real footage is a powerful tool when it comes to show what the business is about. Can be used to present your company, show your factory, promote a product packshot, or just tell any story. It can help create emotional links with your audience by showing punchy images.',
+              },
+            },
+          ],
+          potentialAction: {
+            '@type': 'ReviewAction',
+            target: 'https://www.example.com/review/this/business',
+          },
         });
       });
   });
@@ -764,6 +819,42 @@ describe('Validates JSON-LD For:', () => {
           },
           image: ['https://example.com/photos/photo.jpg'],
           description: 'My event @ my place',
+          offers: [
+            {
+              '@type': 'Offer',
+              price: '119.99',
+              priceCurrency: 'USD',
+              priceValidUntil: '2020-11-05',
+              availability: 'https://schema.org/InStock',
+              url: 'https://www.example.com/offer',
+              seller: {
+                '@type': 'Organization',
+                name: 'John Doe',
+              },
+            },
+            {
+              '@type': 'Offer',
+              price: '139.99',
+              priceCurrency: 'CAD',
+              priceValidUntil: '2020-09-05',
+              availability: 'https://schema.org/InStock',
+              url: 'https://www.example.ca/other-offer',
+              seller: {
+                '@type': 'Organization',
+                name: 'John Doe sr.',
+              },
+            },
+          ],
+          performer: [
+            {
+              '@type': 'PerformingGroup',
+              name: 'Adele',
+            },
+            {
+              '@type': 'PerformingGroup',
+              name: 'Kira and Morrison',
+            },
+          ],
         });
       });
   });
@@ -1430,6 +1521,44 @@ describe('Validates JSON-LD For:', () => {
               },
             },
           ],
+        };
+
+        expect(jsonLD).to.deep.equal(expectedObject);
+      });
+  });
+
+  it('Software App', () => {
+    cy.visit('http://localhost:3000/jsonld');
+    cy.get('head script[type="application/ld+json"]')
+      .should('have.length', expectedJSONResults)
+      .then(tags => {
+        const jsonLD = JSON.parse(tags[softwareAppJsonIndex].innerHTML);
+        assertSchema(schemas)('Software App', '1.0.0')(jsonLD);
+      });
+  });
+
+  it('Software App Matches', () => {
+    cy.visit('http://localhost:3000/jsonld');
+    cy.get('head script[type="application/ld+json"]')
+      .should('have.length', expectedJSONResults)
+      .then(tags => {
+        const jsonLD = JSON.parse(tags[softwareAppJsonIndex].innerHTML);
+        const expectedObject = {
+          '@context': 'https://schema.org',
+          '@type': 'SoftwareApplication',
+          name: 'Angry Birds',
+          operatingSystem: 'ANDROID',
+          applicationCategory: 'GameApplication',
+          aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: '4.6',
+            ratingCount: '8864',
+          },
+          offers: {
+            '@type': 'Offer',
+            price: '1.00',
+            priceCurrency: 'USD',
+          },
         };
 
         expect(jsonLD).to.deep.equal(expectedObject);

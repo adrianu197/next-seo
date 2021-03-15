@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Video } from '../types';
-declare type AggregateRating = {
+export declare type AggregateRating = {
   ratingValue: string;
   ratingCount: string;
 };

@@ -19,6 +19,7 @@ import {
   QAPageJsonld,
   ProfilePageJsonLd,
   CollectionPageJsonLd,
+  SoftwareAppJsonLd,
 } from '../..';
 import Links from '../components/links';
 
@@ -163,6 +164,53 @@ const JsonLD = () => (
           },
         },
       ]}
+      makesOffer={[
+        {
+          priceSpecification: {
+            type: 'UnitPriceSpecification',
+            priceCurrency: 'EUR',
+            price: '1000-10000',
+          },
+          itemOffered: {
+            name: 'Motion Design Services',
+            description:
+              'We are the expert of animation and motion design productions.',
+          },
+        },
+        {
+          priceSpecification: {
+            type: 'UnitPriceSpecification',
+            priceCurrency: 'EUR',
+            price: '2000-10000',
+          },
+          itemOffered: {
+            name: 'Branding Services',
+            description:
+              'Real footage is a powerful tool when it comes to show what the business is about. Can be used to present your company, show your factory, promote a product packshot, or just tell any story. It can help create emotional links with your audience by showing punchy images.',
+          },
+        },
+      ]}
+      areaServed={[
+        {
+          geoMidpoint: {
+            latitude: '41.108237',
+            longitude: '-80.642982',
+          },
+          geoRadius: '1000',
+        },
+        {
+          geoMidpoint: {
+            latitude: '51.108237',
+            longitude: '-80.642982',
+          },
+          geoRadius: '1000',
+        },
+      ]}
+      action={{
+        actionName: 'potentialAction',
+        actionType: 'ReviewAction',
+        target: 'https://www.example.com/review/this/business',
+      }}
     />
 
     <LogoJsonLd
@@ -386,6 +434,42 @@ const JsonLD = () => (
       url="https://example.com/my-event"
       images={['https://example.com/photos/photo.jpg']}
       description="My event @ my place"
+      offers={[
+        {
+          price: '119.99',
+          priceCurrency: 'USD',
+          priceValidUntil: '2020-11-05',
+          availability: 'https://schema.org/InStock',
+          url: 'https://www.example.com/offer',
+          seller: {
+            name: 'John Doe',
+          },
+        },
+        {
+          price: '139.99',
+          priceCurrency: 'CAD',
+          priceValidUntil: '2020-09-05',
+          availability: 'https://schema.org/InStock',
+          url: 'https://www.example.ca/other-offer',
+          seller: {
+            name: 'John Doe sr.',
+          },
+        },
+      ]}
+      aggregateOffer={{
+        priceCurrency: 'USD',
+        lowPrice: '119.99',
+        highPrice: '139.99',
+        offerCount: '5',
+      }}
+      performers={[
+        {
+          name: 'Adele',
+        },
+        {
+          name: 'Kira and Morrison',
+        },
+      ]}
     />
 
     <DatasetJsonLd
@@ -544,6 +628,15 @@ const JsonLD = () => (
           item: 'https://example.com/books/authors',
         },
       ]}
+    />
+
+    <SoftwareAppJsonLd
+      name="Angry Birds"
+      price="1.00"
+      priceCurrency="USD"
+      aggregateRating={{ ratingValue: '4.6', ratingCount: '8864' }}
+      operatingSystem="ANDROID"
+      applicationCategory="GameApplication"
     />
 
     <Links />
